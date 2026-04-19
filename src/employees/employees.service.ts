@@ -41,5 +41,15 @@ export class EmployeesService {
         this.employeeRepository.merge(employee, dto);
 
         return this.employeeRepository.save(employee);
+    };
+
+    async deleteEmployee(id: number): Promise<{ message: string }> {
+        const result = await this.employeeRepository.delete(id);
+
+        if (result.affected === 0) {
+            throw new NotFoundException(`Employee with ID ${id} not found`);
+        }
+
+        return { message: `Employee with ID ${id} has been deleted successfully` };
     }
 }

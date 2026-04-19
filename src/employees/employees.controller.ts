@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { Body, Controller, Get, Param, ParseIntPipe, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post } from '@nestjs/common';
 import { EmployeesService } from './employees.service';
 import { CreateEmployeeDto } from './dto/create-employee.dto';
 import { Employee } from './employee.entity';
@@ -30,5 +30,12 @@ export class EmployeesController {
         @Body() dto: UpdateEmployeeDto
     ): Promise<Employee> {
         return this.employeesService.updateEmployee(id, dto);
-    }
+    };
+
+    @Delete(':id')
+    deleteEmployee(
+        @Param('id', ParseIntPipe) id: number
+    ): Promise<{ message: string }> {
+        return this.employeesService.deleteEmployee(id);
+    };
 }
