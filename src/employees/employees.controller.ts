@@ -1,8 +1,9 @@
 /* eslint-disable prettier/prettier */
-import { Body, Controller, Get, Param, ParseIntPipe, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, ParseIntPipe, Patch, Post } from '@nestjs/common';
 import { EmployeesService } from './employees.service';
 import { CreateEmployeeDto } from './dto/create-employee.dto';
 import { Employee } from './employee.entity';
+import { UpdateEmployeeDto } from './dto/update-employee.dto';
 
 @Controller('employees')
 export class EmployeesController {
@@ -22,4 +23,12 @@ export class EmployeesController {
     geteEmloyee(@Param('id', ParseIntPipe) id: number): Promise<Employee> {
         return this.employeesService.getEmployee(id);
     };
+
+    @Patch(':id')
+    updateEmployee(
+        @Param('id', ParseIntPipe) id: number,
+        @Body() dto: UpdateEmployeeDto
+    ): Promise<Employee> {
+        return this.employeesService.updateEmployee(id, dto);
+    }
 }
