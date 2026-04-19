@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Employee } from './employee.entity';
 import { Repository } from 'typeorm';
@@ -17,5 +17,16 @@ export class EmployeesService {
         return this.employeeRepository.save(employee);
     };
 
-    
+    getAllEmployees(): Promise<Employee[]> {
+        return this.employeeRepository.find();
+    };
+
+    async getEmployee(id: number): Promise<Employee> {
+        const employee = await this.employeeRepository.findOneBy({ id });
+
+        if (!employee)
+            throw new NotFoundException(`Employee witd ID ${id} not found`);
+
+        return employee;
+    };
 }
